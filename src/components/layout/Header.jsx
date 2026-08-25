@@ -1,41 +1,354 @@
-import { Link } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { ChevronDown, User, Heart, ShoppingBag, Menu, X } from "lucide-react";
+
+const authorsLinks = [
+  { title: "طلب نشر", path: "/authors/publish-request" },
+  { title: "المسابقة الدورية", path: "/authors/competition" },
+  { title: "معكم", path: "/authors/with-you" },
+];
+
+const categories = [
+  "روايات",
+  "دراسات فكرية",
+  "فلسفة",
+  "علوم",
+  "أطفال",
+  "تنمية ذاتية",
+  "تاريخ",
+  "أديان",
+  "السياسة",
+  "أدب عالمي",
+  "تصنيفات أخرى",
+];
 
 const Header = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [isAuthorsOpen, setIsAuthorsOpen] = useState(false);
+
+  const mobileMenuRef = useRef(null);
+  const categoriesRef = useRef(null);
+  const authorsRef = useRef(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileMenuRef.current && mobileMenuRef.current.contains(event.target))
+        return;
+
+      if (
+        categoriesRef.current &&
+        !categoriesRef.current.contains(event.target)
+      ) {
+        setIsCategoriesOpen(false);
+      }
+      if (authorsRef.current && !authorsRef.current.contains(event.target)) {
+        setIsAuthorsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const navLinkClass = ({ isActive }) =>
+    `flex items-center gap-1 transition h-[74px] ${
+      isActive
+        ? "text-[#289D61]"
+        : "text-[#4A5568] hover:text-[#289D61]"
+    }`;
+
+  const isCategoriesActive = location.pathname.startsWith("/categories");
+  const isAuthorsActive = location.pathname.startsWith("/authors");
+
   return (
-    <header className="bg-white shadow-md p-4 sticky top-0 z-40">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="text-2xl font-bold" style={{ color: "#289D61" }}>
-          مداد العلياء
-        </div>
-        <nav className="hidden md:flex space-x-4 space-x-reverse">
-          <Link to="/" className="hover:text-[#289D61] transition">
+    <header className="bg-white shadow-[0_4px_20px_rgba(0,0,0,0.15)] h-[74px] sticky top-0 z-40 w-full flex items-center font-cairo">
+      <div className="container mx-auto px-4 lg:px-8 flex justify-between items-center w-full">
+        {/* Logo */}
+        <Link to="/" className="flex items-center">
+          <img src="/logo.svg" alt="مداد العلياء" className="h-12 w-auto" />
+          <img
+            src="/madad.svg"
+            alt="مداد العلياء"
+            className="h-9 w-auto mt-7"
+          />
+        </Link>
+
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex items-center gap-10 font-semibold text-[16px] h-full">
+          <NavLink to="/" className={navLinkClass}>
             الرئيسية
-          </Link>
-          <Link to="/courses" className="hover:text-[#289D61] transition">
-            الدورات
-          </Link>
-          <Link to="/about" className="hover:text-[#289D61] transition">
-            من نحن
-          </Link>
-          <Link to="/contact" className="hover:text-[#289D61] transition">
-            اتصل بنا
-          </Link>
+          </NavLink>
+
+          {/* Categories Dropdown */}
+          <div className="relative h-full" ref={categoriesRef}>
+            <button
+              onClick={() => {
+                setIsCategoriesOpen(!isCategoriesOpen);
+                setIsAuthorsOpen(false);
+              }}
+              className={`flex items-center justify-center gap-1 transition h-[74px] w-[119px] ${
+                isCategoriesOpen
+                  ? "bg-[#289D61] text-white"
+                  : isCategoriesActive
+                    ? "text-[#289D61]"
+                    : "text-[#4A5568] hover:text-[#289D61]"
+              }`}
+            >
+              التصنيفات
+              <ChevronDown
+                className={`w-5 h-5 transition-transform duration-300 ${
+                  isCategoriesOpen ? "rotate-180 text-white" : ""
+                }`}
+              />
+            </button>
+
+            {isCategoriesOpen && (
+              <div className="absolute top-[74px] right-0 w-[125px] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.15)] flex flex-col py-2 z-50 rounded-b-md">
+                {categories.map((cat, idx) => (
+                  <Link
+                    key={idx}
+                    to={`/categories/${cat}`}
+                    onClick={() => setIsCategoriesOpen(false)}
+                    className="w-full text-center py-2.5 text-[#289D61] hover:font-bold hover:bg-green-50 transition-all text-[16px]"
+                  >
+                    {cat}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <NavLink to="/best-sellers" className={navLinkClass}>
+            الأكثر مبيعا
+          </NavLink>
+          <NavLink to="/blog" className={navLinkClass}>
+            المدونة
+          </NavLink>
+
+          {/* Authors Dropdown */}
+          <div className="relative h-full" ref={authorsRef}>
+            <button
+              onClick={() => {
+                setIsAuthorsOpen(!isAuthorsOpen);
+                setIsCategoriesOpen(false);
+              }}
+              className={`flex items-center justify-center gap-1 transition h-[74px] w-[119px] ${
+                isAuthorsOpen
+                  ? "bg-[#289D61] text-white"
+                  : isAuthorsActive
+                    ? "text-[#289D61]"
+                    : "text-[#4A5568] hover:text-[#289D61]"
+              }`}
+            >
+              المؤلفون
+              <ChevronDown
+                className={`w-5 h-5 transition-transform duration-300 ${
+                  isAuthorsOpen ? "rotate-180 text-white" : ""
+                }`}
+              />
+            </button>
+
+            {isAuthorsOpen && (
+              <div className="absolute top-[74px] right-0 w-[140px] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.15)] flex flex-col py-2 z-50 rounded-b-md">
+                {authorsLinks.map((link, idx) => (
+                  <Link
+                    key={idx}
+                    to={link.path}
+                    onClick={() => setIsAuthorsOpen(false)}
+                    className="w-full text-center py-2.5 text-[#289D61] hover:font-bold hover:bg-green-50 transition-all text-[16px]"
+                  >
+                    {link.title}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </nav>
-        <div className="flex space-x-2 space-x-reverse">
+
+        {/* Desktop Actions */}
+        <div className="hidden lg:flex items-center gap-4">
           <Link
             to="/login"
-            className="px-4 py-2 border border-[#289D61] text-[#289D61] rounded hover:bg-[#289D61] hover:text-white transition"
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#289D61] text-white rounded-lg hover:bg-opacity-90 transition shadow-sm font-medium"
           >
-            دخول
+            تسجيل الدخول
+            <User className="w-5 h-5" />
           </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/favorites"
+              className="p-2.5 border border-[#289D61] text-[#289D61] rounded-full hover:bg-green-50 transition shadow-sm"
+            >
+              <Heart className="w-5 h-5" />
+            </Link>
+            <Link
+              to="/cart"
+              className="p-2.5 border border-[#289D61] text-[#289D61] rounded-full hover:bg-green-50 transition shadow-sm"
+            >
+              <ShoppingBag className="w-5 h-5" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Mobile Hamburger & Cart */}
+        <div className="flex lg:hidden items-center gap-3">
           <Link
-            to="/register"
-            className="px-4 py-2 bg-[#289D61] text-white rounded hover:bg-opacity-90 transition"
+            to="/cart"
+            className="p-2 border border-[#289D61] text-[#289D61] rounded-full hover:bg-green-50 transition shadow-sm"
           >
-            تسجيل
+            <ShoppingBag className="w-5 h-5" />
           </Link>
+          <button
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="p-2 text-[#289D61]"
+          >
+            <Menu className="w-7 h-7" />
+          </button>
         </div>
       </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 backdrop-blur-md z-50 lg:hidden"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          <div
+            ref={mobileMenuRef}
+            className="fixed top-0 right-0 h-full w-[280px] bg-white shadow-lg flex flex-col p-4 overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+            dir="rtl"
+          >
+            <div className="flex justify-between items-center mb-8">
+              <Link
+                to="/"
+                className="flex items-center"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <img
+                  src="/logo.svg"
+                  alt="مداد العلياء"
+                  className="h-10 w-auto"
+                />
+                <img
+                  src="/madad.svg"
+                  alt="مداد العلياء"
+                  className="h-7 w-auto mt-6"
+                />
+              </Link>
+              <button
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-gray-500 hover:text-red-500"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <div className="flex flex-col gap-4">
+              <Link
+                to="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-lg font-bold text-[#289D61]"
+              >
+                الرئيسية
+              </Link>
+
+              <div>
+                <button
+                  onClick={() => {
+                    setIsCategoriesOpen(!isCategoriesOpen);
+                    setIsAuthorsOpen(false);
+                  }}
+                  className="flex items-center justify-between w-full text-lg font-medium text-[#4A5568]"
+                >
+                  التصنيفات
+                  <ChevronDown
+                    className={`w-5 h-5 transition-transform ${isCategoriesOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+                {isCategoriesOpen && (
+                  <div className="flex flex-col gap-3 mt-3 pr-4 border-r-2 border-[#289D61]">
+                    {categories.map((cat, idx) => (
+                      <Link
+                        key={idx}
+                        to={`/categories/${cat}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="text-[#4A5568] hover:text-[#289D61]"
+                      >
+                        {cat}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <Link
+                to="/best-sellers"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-lg font-medium text-[#4A5568] hover:text-[#289D61]"
+              >
+                الأكثر مبيعا
+              </Link>
+              <Link
+                to="/blog"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-lg font-medium text-[#4A5568] hover:text-[#289D61]"
+              >
+                المدونة
+              </Link>
+
+              <div>
+                <button
+                  onClick={() => {
+                    setIsAuthorsOpen(!isAuthorsOpen);
+                    setIsCategoriesOpen(false);
+                  }}
+                  className="flex items-center justify-between w-full text-lg font-medium text-[#4A5568]"
+                >
+                  المؤلفون
+                  <ChevronDown
+                    className={`w-5 h-5 transition-transform ${isAuthorsOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+                {isAuthorsOpen && (
+                  <div className="flex flex-col gap-3 mt-3 pr-4 border-r-2 border-[#289D61]">
+                    {authorsLinks.map((link, idx) => (
+                      <Link
+                        key={idx}
+                        to={link.path}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="text-[#4A5568] hover:text-[#289D61]"
+                      >
+                        {link.title}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="mt-8 flex flex-col gap-4 border-t pt-6 border-gray-100">
+              <Link
+                to="/login"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-2 w-full py-3 bg-[#289D61] text-white rounded-lg font-semibold"
+              >
+                تسجيل الدخول
+                <User className="w-5 h-5" />
+              </Link>
+              <Link
+                to="/favorites"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-2 text-lg font-medium text-[#4A5568] hover:text-[#289D61]"
+              >
+                <Heart className="w-5 h-5 text-[#289D61]" />
+                المفضلة
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
