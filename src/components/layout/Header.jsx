@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { ChevronDown, User, Heart, ShoppingBag, Menu, X } from "lucide-react";
+import { LuChevronDown as ChevronDown, LuUser as User, LuHeart as Heart, LuShoppingBag as ShoppingBag, LuMenu as Menu, LuX as X } from "react-icons/lu";
 
 const authorsLinks = [
   { title: "طلب نشر", path: "/authors/publish-request" },
