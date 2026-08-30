@@ -35,7 +35,7 @@ const BookCard = ({ book }) => {
 
         <div className="flex items-center justify-center gap-2 font-cairo font-bold text-[#242424] text-[14px] md:text-[16px] mb-4 md:mb-[24px]">
           <span>{book.price} ر.س</span>
-          {book.oldPrice && (
+          {book.oldPrice && book.discount && (
             <span className="text-gray-400 line-through text-[12px] md:text-[13px] font-normal">
               {book.oldPrice}
             </span>
