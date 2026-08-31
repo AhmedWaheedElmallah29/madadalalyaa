@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { LuChevronDown as ChevronDown, LuUser as User, LuHeart as Heart, LuShoppingBag as ShoppingBag, LuMenu as Menu, LuX as X } from "react-icons/lu";
+import { LuChevronDown as ChevronDown, LuChevronLeft as ChevronLeft, LuUser as User, LuHeart as Heart, LuShoppingBag as ShoppingBag, LuMenu as Menu, LuX as X } from "react-icons/lu";
 
 const authorsLinks = [
   { title: "طلب نشر", path: "/authors/publish-request" },
@@ -9,22 +9,31 @@ const authorsLinks = [
 ];
 
 const categories = [
-  "روايات",
-  "دراسات فكرية",
-  "فلسفة",
-  "علوم",
-  "أطفال",
-  "تنمية ذاتية",
-  "تاريخ",
-  "أديان",
-  "السياسة",
-  "أدب عالمي",
-  "تصنيفات أخرى",
+  {
+    name: "روايات",
+    subCategories: [
+      "روايات رومانسية",
+      "روايات تاريخية",
+      "روايات رعب",
+      "روايات فانتازيا",
+    ],
+  },
+  { name: "دراسات فكرية" },
+  { name: "فلسفة" },
+  { name: "علوم" },
+  { name: "أطفال" },
+  { name: "تنمية ذاتية" },
+  { name: "تاريخ" },
+  { name: "أديان" },
+  { name: "السياسة" },
+  { name: "أدب عالمي" },
+  { name: "تصنيفات أخرى" },
 ];
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [activeSubCategory, setActiveSubCategory] = useState(null);
   const [isAuthorsOpen, setIsAuthorsOpen] = useState(false);
 
   const mobileMenuRef = useRef(null);
@@ -42,6 +51,7 @@ const Header = () => {
         !categoriesRef.current.contains(event.target)
       ) {
         setIsCategoriesOpen(false);
+        setActiveSubCategory(null);
       }
       if (authorsRef.current && !authorsRef.current.contains(event.target)) {
         setIsAuthorsOpen(false);
@@ -104,16 +114,54 @@ const Header = () => {
             </button>
 
             {isCategoriesOpen && (
-              <div className="absolute top-[74px] right-0 w-[125px] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.15)] flex flex-col py-2 z-50 rounded-b-md">
+              <div className="absolute top-[74px] right-0 w-[140px] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.15)] flex flex-col py-2 z-50 rounded-b-md">
                 {categories.map((cat, idx) => (
-                  <Link
-                    key={idx}
-                    to={`/categories/${cat}`}
-                    onClick={() => setIsCategoriesOpen(false)}
-                    className="w-full text-center py-2.5 text-[#289D61] hover:font-bold hover:bg-green-50 transition-all text-[16px]"
-                  >
-                    {cat}
-                  </Link>
+                  <div key={idx} className="relative">
+                    {cat.subCategories ? (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setActiveSubCategory(activeSubCategory === cat.name ? null : cat.name);
+                        }}
+                        className={`w-full flex items-center justify-between px-3 py-2.5 transition-all text-[16px] ${
+                          activeSubCategory === cat.name
+                            ? "bg-[#289D61] text-white font-bold"
+                            : "text-[#289D61] hover:font-bold hover:bg-green-50"
+                        }`}
+                      >
+                        <span className="flex-1 text-center pl-4">{cat.name || cat}</span>
+                        <ChevronLeft className="w-4 h-4 shrink-0" />
+                      </button>
+                    ) : (
+                      <Link
+                        to={`/categories/${cat.name || cat}`}
+                        onClick={() => {
+                          setIsCategoriesOpen(false);
+                          setActiveSubCategory(null);
+                        }}
+                        className="w-full block text-center py-2.5 text-[#289D61] hover:font-bold hover:bg-green-50 transition-all text-[16px]"
+                      >
+                        {cat.name || cat}
+                      </Link>
+                    )}
+                    {cat.subCategories && activeSubCategory === cat.name && (
+                      <div className="absolute top-0 right-[140px] flex w-[160px] bg-white shadow-[0_4px_20px_rgba(0,0,0,0.15)] flex-col py-2 z-50 rounded-md">
+                        {cat.subCategories.map((sub, subIdx) => (
+                          <Link
+                            key={subIdx}
+                            to={`/categories/${cat.name || cat}/${sub}`}
+                            onClick={() => {
+                              setIsCategoriesOpen(false);
+                              setActiveSubCategory(null);
+                            }}
+                            className="w-full block text-center py-2.5 text-[#289D61] hover:font-bold hover:bg-green-50 transition-all text-[16px]"
+                          >
+                            {sub}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 ))}
               </div>
             )}
@@ -170,7 +218,7 @@ const Header = () => {
         <div className="hidden lg:flex items-center gap-4">
           <Link
             to="/login"
-            className="flex items-center gap-2 px-5 py-2.5 bg-[#289D61] text-white rounded-lg hover:bg-opacity-90 transition shadow-sm font-medium"
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#289D61] text-white rounded-lg hover:bg-[#1E6A43] transition-colors shadow-sm font-medium"
           >
             تسجيل الدخول
             <User className="w-5 h-5" />
@@ -178,13 +226,13 @@ const Header = () => {
           <div className="flex items-center gap-2">
             <Link
               to="/favorites"
-              className="p-2.5 border border-[#289D61] text-[#289D61] rounded-full hover:bg-green-50 transition shadow-sm"
+              className="p-2.5 border border-[#289D61] text-[#289D61] rounded-full hover:bg-[#289D61] hover:text-white transition-colors shadow-sm"
             >
               <Heart className="w-5 h-5" />
             </Link>
             <Link
               to="/cart"
-              className="p-2.5 border border-[#289D61] text-[#289D61] rounded-full hover:bg-green-50 transition shadow-sm"
+              className="p-2.5 border border-[#289D61] text-[#289D61] rounded-full hover:bg-[#289D61] hover:text-white transition-colors shadow-sm"
             >
               <ShoppingBag className="w-5 h-5" />
             </Link>
@@ -195,7 +243,7 @@ const Header = () => {
         <div className="flex lg:hidden items-center gap-3">
           <Link
             to="/cart"
-            className="p-2 border border-[#289D61] text-[#289D61] rounded-full hover:bg-green-50 transition shadow-sm"
+            className="p-2. border border-[#289D61] text-[#289D61] rounded-full hover:bg-[#289D61] hover:text-white transition-colors shadow-sm"
           >
             <ShoppingBag className="w-5 h-5" />
           </Link>
@@ -270,14 +318,29 @@ const Header = () => {
                 {isCategoriesOpen && (
                   <div className="flex flex-col gap-3 mt-3 pr-4 border-r-2 border-[#289D61]">
                     {categories.map((cat, idx) => (
-                      <Link
-                        key={idx}
-                        to={`/categories/${cat}`}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="text-[#4A5568] hover:text-[#289D61]"
-                      >
-                        {cat}
-                      </Link>
+                      <div key={idx} className="flex flex-col gap-2">
+                        <Link
+                          to={`/categories/${cat.name || cat}`}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className="text-[#4A5568] hover:text-[#289D61]"
+                        >
+                          {cat.name || cat}
+                        </Link>
+                        {cat.subCategories && (
+                          <div className="flex flex-col gap-2 pr-4 border-r-2 border-[#289D61] mt-1">
+                            {cat.subCategories.map((sub, subIdx) => (
+                              <Link
+                                key={subIdx}
+                                to={`/categories/${cat.name || cat}/${sub}`}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="text-[#4A5568] hover:text-[#289D61] text-sm"
+                              >
+                                {sub}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     ))}
                   </div>
                 )}
@@ -332,7 +395,7 @@ const Header = () => {
               <Link
                 to="/login"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center justify-center gap-2 w-full py-3 bg-[#289D61] text-white rounded-lg font-semibold"
+                className="flex items-center justify-center gap-2 w-full py-3 bg-[#289D61] text-white rounded-lg font-semibold hover:bg-[#1E6A43] transition-colors"
               >
                 تسجيل الدخول
                 <User className="w-5 h-5" />

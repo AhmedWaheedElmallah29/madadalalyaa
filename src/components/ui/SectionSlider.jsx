@@ -106,7 +106,7 @@ const SectionSlider = ({
           <div className="flex justify-center mt-10">
             <Link
               to={moreLink}
-              className="flex items-center justify-center gap-1 w-[300px] h-[48px] bg-white border border-[#289D61] text-[#289D61] rounded shadow-[0_2px_15px_rgba(0,0,0,0.15)] font-cairo font-bold text-[16px] hover:bg-green-50 transition-colors"
+              className="flex items-center justify-center gap-1 w-[300px] h-[48px] bg-[#289D61] text-white rounded shadow-[0_2px_15px_rgba(0,0,0,0.15)] font-cairo font-bold text-[16px] hover:bg-[#1E6A43] hover:shadow-[0_4px_20px_rgba(40,157,97,0.4)] transition-all"
             >
               <span>{moreText}</span>
               <LuArrowLeft size={16} />

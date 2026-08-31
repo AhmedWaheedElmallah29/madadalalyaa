@@ -47,16 +47,16 @@ const BlogCard = ({ post }) => {
         <div className="flex items-center justify-between w-full mt-6 md:mt-auto gap-2">
           <Link
             to={`/blog/${post.id}`}
-            className="flex-1 md:flex-none flex items-center justify-center gap-[6px] md:gap-[10px] md:w-[285px] h-[36px] md:h-[40px] bg-[#289D61] text-[#FAFAFA] rounded-lg font-cairo font-semibold text-[13px] md:text-[14px] hover:bg-opacity-90 transition-all"
+            className="flex-1 md:flex-none flex items-center justify-center gap-[6px] md:gap-[10px] md:w-[285px] h-[36px] md:h-[40px] bg-[#289D61] text-[#FAFAFA] rounded-lg font-cairo font-semibold text-[13px] md:text-[14px] hover:bg-[#1E6A43] transition-all"
           >
             <span>اقرء المزيد</span>
             <LuArrowLeft size={16} />
           </Link>
           <div className="flex items-center gap-[6px] md:gap-[8px]">
-            <button className="flex items-center justify-center w-[32px] h-[32px] border-[1.5px] border-[#1E6A43] text-[#1E6A43] rounded-full hover:bg-green-50 transition-colors shrink-0">
+            <button className="flex items-center justify-center w-[32px] h-[32px] border-[1.5px] border-[#1E6A43] text-[#1E6A43] rounded-full hover:bg-[#1E6A43] hover:text-white  transition-colors shrink-0">
               <LuThumbsUp size={16} />
             </button>
-            <button className="flex items-center justify-center w-[32px] h-[32px] border-[1.5px] border-[#1E6A43] text-[#1E6A43] rounded-full hover:bg-green-50 transition-colors shrink-0">
+            <button className="flex items-center justify-center w-[32px] h-[32px] border-[1.5px] border-[#1E6A43] text-[#1E6A43] rounded-full hover:bg-[#1E6A43] hover:text-white transition-colors shrink-0">
               <LuThumbsDown size={16} />
             </button>
           </div>
