@@ -34,15 +34,15 @@ const EditCategoryModal = ({ isOpen, onClose, categoryName }) => {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-3 justify-end">
+          <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-3 justify-end mt-4">
             <button 
-              className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 px-8 py-2.5 rounded-lg font-medium transition-colors"
+              className="bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 px-4 sm:px-8 py-2.5 rounded-lg font-medium transition-colors w-full sm:w-auto"
               onClick={onClose}
             >
               إلغاء
             </button>
             <button 
-              className="bg-[#00a63e] hover:bg-green-700 text-white px-8 py-2.5 rounded-lg font-medium transition-colors shadow-sm"
+              className="bg-[#00a63e] hover:bg-green-700 text-white px-4 sm:px-8 py-2.5 rounded-lg font-medium transition-colors shadow-sm w-full sm:w-auto"
               onClick={onClose}
             >
               حفظ التغييرات

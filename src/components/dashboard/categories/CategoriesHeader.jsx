@@ -7,10 +7,10 @@ const CategoriesHeader = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-6 relative overflow-hidden">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-6 relative overflow-hidden gap-4 md:gap-0">
         {/* Right Content */}
         <div className="flex items-center gap-4 z-10">
-          <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
             <LuLayers className="text-2xl" />
           </div>
           <div>
@@ -21,7 +21,7 @@ const CategoriesHeader = () => {
 
         {/* Left Action Button */}
         <button 
-          className="z-10 flex items-center gap-2 bg-[#219B54] hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg font-medium transition-colors text-sm shadow-sm"
+          className="z-10 flex items-center justify-center gap-2 bg-[#219B54] hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg font-medium transition-colors text-sm shadow-sm w-full md:w-auto"
           onClick={() => setIsModalOpen(true)}
         >
           <LuPlus className="text-lg" />

@@ -55,7 +55,7 @@ const CategoryNode = ({ category, level = 1 }) => {
   };
 
   // Calculate indentation based on level (RTL means padding right)
-  const indentClass = level === 2 ? "pr-8" : level === 3 ? "pr-16" : "";
+  const indentClass = level === 2 ? "pr-4 md:pr-8" : level === 3 ? "pr-8 md:pr-16" : "";
 
   return (
     <div
@@ -63,52 +63,52 @@ const CategoryNode = ({ category, level = 1 }) => {
     >
       {/* Node Row */}
       <div
-        className={`group flex items-center justify-between py-4 px-6 transition-colors ${
+        className={`group flex items-center justify-between py-4 px-3 md:px-6 transition-colors ${
           level === 1 ? "bg-white" : "bg-[#f8f9fa] border-t border-gray-100"
         }`}
       >
-        <div className={`flex items-center gap-4 ${indentClass}`}>
+        <div className={`flex items-center gap-2 md:gap-4 ${indentClass}`}>
           {/* Chevron for expand/collapse (only if has children) */}
           <div
-            className="w-5 flex justify-center cursor-pointer"
+            className="w-5 flex justify-center cursor-pointer shrink-0"
             onClick={() => setIsExpanded(!isExpanded)}
           >
             {category.children &&
               category.children.length > 0 &&
               (isExpanded ? (
-                <LuChevronDown className="text-gray-400 text-lg" />
+                <LuChevronDown className="text-gray-400 text-lg md:text-xl" />
               ) : (
-                <LuChevronLeft className="text-gray-400 text-lg" />
+                <LuChevronLeft className="text-gray-400 text-lg md:text-xl" />
               ))}
           </div>
 
           <LuFolder
-            className={`text-xl ${getIconColor(level)}`}
+            className={`text-xl md:text-2xl ${getIconColor(level)} shrink-0`}
             fill="currentColor"
             fillOpacity={0.2}
           />
 
           <div>
-            <div className="flex items-center gap-3">
-              <h4 className="font-semibold text-gray-800 text-[15px]">
+            <div className="flex items-center gap-2 md:gap-3 flex-wrap">
+              <h4 className="font-semibold text-gray-800 text-[14px] md:text-[15px]">
                 {category.name}
               </h4>
               <span
-                className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${getBadgeStyle(level)}`}
+                className={`text-[10px] md:text-[11px] font-bold px-2 py-0.5 rounded-full ${getBadgeStyle(level)} whitespace-nowrap`}
               >
                 {getBadgeText(level)}
               </span>
             </div>
-            <p className="text-[12px] text-gray-500 mt-1">
+            <p className="text-[11px] md:text-[12px] text-gray-500 mt-1">
               {category.booksCount} كتاب
               {category.subCount ? ` • ${category.subCount} تصنيف فرعي` : ""}
             </p>
           </div>
         </div>
 
-        {/* Actions (visible on hover) - based on screenshot the row with "روايات عربية" has them */}
+        {/* Actions (always visible on mobile, hover on desktop) */}
         <div
-          className={`flex items-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity ${level === 2 && isExpanded ? "opacity-100" : ""}`}
+          className={`flex items-center gap-1 md:gap-3 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity ${level === 2 && isExpanded ? "lg:opacity-100" : ""}`}
         >
           <button
             className="text-blue-500 hover:bg-blue-50 p-1.5 rounded-md transition-colors"
