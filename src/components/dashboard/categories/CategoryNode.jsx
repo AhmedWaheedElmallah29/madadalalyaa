@@ -4,11 +4,11 @@ import {
   LuChevronDown,
   LuChevronLeft,
   LuTrash2,
-  LuPencil,
   LuPlus,
 } from "react-icons/lu";
 import AddSubcategoryModal from "./AddSubcategoryModal";
 import EditCategoryModal from "./EditCategoryModal";
+import { FiEdit } from "react-icons/fi";
 
 const CategoryNode = ({ category, level = 1 }) => {
   const [isExpanded, setIsExpanded] = useState(category.expanded || false);
@@ -55,7 +55,8 @@ const CategoryNode = ({ category, level = 1 }) => {
   };
 
   // Calculate indentation based on level (RTL means padding right)
-  const indentClass = level === 2 ? "pr-4 md:pr-8" : level === 3 ? "pr-8 md:pr-16" : "";
+  const indentClass =
+    level === 2 ? "pr-4 md:pr-8" : level === 3 ? "pr-8 md:pr-16" : "";
 
   return (
     <div
@@ -120,14 +121,14 @@ const CategoryNode = ({ category, level = 1 }) => {
             <LuPlus className="text-lg" />
           </button>
 
-          <button 
+          <button
             className="text-emerald-500 hover:bg-emerald-50 p-1.5 rounded-md transition-colors"
             onClick={(e) => {
               e.stopPropagation();
               setIsEditModalOpen(true);
             }}
           >
-            <LuPencil className="text-lg" />
+            <FiEdit className="text-lg" />
           </button>
 
           <button className="text-red-500 hover:bg-red-50 p-1.5 rounded-md transition-colors">

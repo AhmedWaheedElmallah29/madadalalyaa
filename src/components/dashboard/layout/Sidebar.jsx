@@ -62,31 +62,32 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     <>
       {/* Mobile Overlay */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* Sidebar Content */}
-      <aside 
+      <aside
         className={`fixed lg:static top-0 right-0 z-50 h-screen w-[260px] lg:w-[280px] bg-white border-l border-gray-100 flex flex-col overflow-y-auto shrink-0 transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full lg:translate-x-0"
         }`}
       >
         {/* Logo Area */}
-        <div className="p-6 flex items-center justify-center border-b border-gray-100/50">
+        <div className="p-6 flex items-center justify-start border-b border-gray-100/50">
           <div className="flex items-center gap-3">
+            <img
+              src="/logo.svg"
+              alt="مداد العلياء"
+              className="w-[48px] h-[43px] object-contain shrink-0"
+            />
+
             <div className="text-right">
               <h1 className="text-[18px] font-bold text-gray-800 leading-tight">
                 مداد العلياء
               </h1>
               <p className="text-[12px] text-gray-500">لوحة التحكم</p>
-            </div>
-            {/* Mock Logo Icon */}
-            <div className="w-9 h-9 bg-[#1c2b42] rounded-md flex items-center justify-center relative overflow-hidden shrink-0">
-              <div className="absolute bottom-0 w-full h-2.5 bg-[#219B54]"></div>
-              <LuBook className="text-white relative z-10 text-lg mb-1" />
             </div>
           </div>
         </div>
