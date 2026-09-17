@@ -1,0 +1,19 @@
+{
+    "siteName": "Midad Al Alya",
+    "home": "Accueil",
+    "courses": "Cours",
+    "about": "À propos",
+    "contact": "Contact",
+    "login": "Connexion",
+    "register": "Inscription",
+    "moreBooks": "Plus de livres et résultats de recherche",
+    "chooseCategory": "Choisir une catégorie",
+    "allBooks": "Tous les livres",
+    "romantic": "Romans romantiques",
+    "historical": "Romans historiques",
+    "horror": "Romans d'horreur",
+    "fantasy": "Romans fantastiques",
+    "addToCart": "Ajouter au panier",
+    "next": "Suivant",
+    "previous": "Précédent"
+}

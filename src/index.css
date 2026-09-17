@@ -1,0 +1,30 @@
+@import "tailwindcss";
+@import "@fortawesome/fontawesome-free/css/all.css";
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap");
+
+body {
+  font-family: var(--font-cairo);
+  background-color: #fafafa;
+}
+
+@theme {
+  --font-cairo: "Cairo", sans-serif;
+
+  --color-main: #289d61;
+  --color-hover-main: #289d75;
+  --color-whete: #fff;
+  --color-gray: #e6e6e6;
+  --color-gray-1: #e9f5ef;
+  --color-gray-2: #9d9d9d;
+  --color-background: #fafafa;
+  --color-card-1: #f4fef7;
+  --color-card-2: #fff5f5;
+  --color-icon-1: #dcfce7;
+  --color-icon-2: #ffe2e2;
+  --color-icon-3: #dbeafe;
+  --color-icon-4: #f3e8ff;
+  --color-Icon-1: #00a63e;
+  --color-Icon-2: #e7000b;
+  --color-Icon-3: #155dfc;
+  --color-Icon-4: #af46fb;
+}
